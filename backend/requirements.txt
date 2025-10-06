@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+sqlalchemy
+psycopg2-binary
+passlib[bcrypt]
+cryptography
+scikit-learn
+openai
+pymongo
+dnspython
+tenacity
+pytest
+httpx
+fastapi-limiter
+python-jose[cryptography]
+python-multipart

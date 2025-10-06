@@ -1,0 +1,17 @@
+# Render deployment config placeholder
+
+services:
+  - type: web
+    name: health-mood-backend
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port 10000"
+    envVars:
+      - key: DATABASE_URL
+        value: <your_postgres_url>
+      - key: SECRET_KEY
+        value: <your_secret_key>
+      - key: OPENAI_API_KEY
+        value: <your_openai_key>
+      - key: FERNET_KEY
+        value: <your_fernet_key>

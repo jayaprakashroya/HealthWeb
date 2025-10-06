@@ -1,0 +1,17 @@
+# Node
+node_modules/
+build/
+.env
+
+# Python
+__pycache__/
+*.pyc
+.env
+
+# Database
+*.db
+
+# Misc
+.DS_Store
+.idea/
+.vscode/

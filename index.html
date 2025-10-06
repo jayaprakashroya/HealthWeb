@@ -1,0 +1,406 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WellnessAI - Personal Health Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-heart text-blue-600 text-xl"></i>
+                        <span class="text-xl font-bold text-gray-900 dark:text-white">WellnessAI</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                        <i class="fas fa-moon text-gray-600 dark:text-gray-300"></i>
+                    </button>
+                    <div id="auth-buttons" class="hidden">
+                        <button id="login-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors mr-2">
+                            Login
+                        </button>
+                        <button id="signup-btn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                            Sign Up
+                        </button>
+                    </div>
+                    <div id="user-menu" class="hidden flex items-center space-x-4">
+                        <span id="user-greeting" class="text-gray-700 dark:text-gray-300"></span>
+                        <button id="daily-checkin-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                            <i class="fas fa-plus mr-2"></i>Daily Check-in
+                        </button>
+                        <button id="logout-btn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Hero Section -->
+        <div class="mb-8">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 backdrop-blur-lg">
+                <div class="flex flex-col lg:flex-row items-center justify-between">
+                    <div class="mb-6 lg:mb-0">
+                        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Welcome back!</h1>
+                        <p class="text-gray-600 dark:text-gray-300">Here's your wellness overview for today</p>
+                    </div>
+                    <div class="flex items-center space-x-6">
+                        <div class="text-center">
+                            <div id="wellness-score" class="relative w-24 h-24 mx-auto mb-2">
+                                <!-- Wellness score ring will be rendered here -->
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">Wellness Score</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl mb-1" id="today-mood">😊</div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">Today's Mood</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Sleep Hours</p>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white" id="sleep-hours">8.0</p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-moon text-blue-600"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex items-center text-sm">
+                        <i class="fas fa-arrow-up text-green-500 mr-1"></i>
+                        <span class="text-green-500">+0.5h</span>
+                        <span class="text-gray-500 ml-2">vs yesterday</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Mood Average</p>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white" id="mood-average">7.8</p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-smile text-green-600"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex items-center text-sm">
+                        <i class="fas fa-arrow-up text-green-500 mr-1"></i>
+                        <span class="text-green-500">+0.3</span>
+                        <span class="text-gray-500 ml-2">vs last week</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Habits Completed</p>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white" id="habits-completed">4/5</p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-purple-600"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex items-center text-sm">
+                        <i class="fas fa-equals text-blue-500 mr-1"></i>
+                        <span class="text-blue-500">Same</span>
+                        <span class="text-gray-500 ml-2">as yesterday</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Streak</p>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white" id="current-streak">7</p>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-fire text-orange-600"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex items-center text-sm">
+                        <i class="fas fa-arrow-up text-green-500 mr-1"></i>
+                        <span class="text-green-500">+2 days</span>
+                        <span class="text-gray-500 ml-2">keep it up!</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Habit Tracker -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Today's Habits</h2>
+                        <button class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
+                            <i class="fas fa-plus mr-1"></i>Add Habit
+                        </button>
+                    </div>
+                    <div id="habit-tracker" class="space-y-4">
+                        <!-- Habits will be rendered here -->
+                    </div>
+                </div>
+
+                <!-- Analytics -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 max-w-4xl mx-auto">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-bold text-gray-900 dark:text-white">Analytics</h2>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <h3 class="text-md font-semibold text-gray-900 dark:text-white mb-2">Mood Distribution</h3>
+                            <canvas id="mood-chart" width="150" height="150"></canvas>
+                        </div>
+                        <div>
+                            <h3 class="text-md font-semibold text-gray-900 dark:text-white mb-2">Habit Completion</h3>
+                            <canvas id="habit-chart" width="150" height="150"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="space-y-8">
+                <!-- AI Recommendations -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">AI Recommendations</h2>
+                    <div id="recommendations" class="space-y-4">
+                        <!-- Recommendations will be rendered here -->
+                    </div>
+                </div>
+
+                <!-- Mood Journal -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Mood Journal</h2>
+                        <button class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
+                            <i class="fas fa-plus mr-1"></i>Add Entry
+                        </button>
+                    </div>
+                    <div id="mood-journal" class="space-y-4 max-h-96 overflow-y-auto">
+                        <!-- Mood entries will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Daily Check-in Modal -->
+    <div id="checkin-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Daily Check-in</h2>
+                        <button id="close-modal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+
+                    <!-- Progress Indicator -->
+                    <div class="flex items-center justify-center mb-8">
+                        <div class="flex items-center space-x-2">
+                            <div id="step-1" class="w-3 h-3 rounded-full bg-blue-600"></div>
+                            <div class="w-8 h-0.5 bg-gray-300 dark:bg-gray-600"></div>
+                            <div id="step-2" class="w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+                            <div class="w-8 h-0.5 bg-gray-300 dark:bg-gray-600"></div>
+                            <div id="step-3" class="w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+                            <div class="w-8 h-0.5 bg-gray-300 dark:bg-gray-600"></div>
+                            <div id="step-4" class="w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+                            <div class="w-8 h-0.5 bg-gray-300 dark:bg-gray-600"></div>
+                            <div id="step-5" class="w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+                        </div>
+                    </div>
+
+                    <!-- Step 1: Mood -->
+                    <div id="step1-content" class="step-content">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">How are you feeling today?</h3>
+                        <div class="grid grid-cols-3 gap-4 mb-6">
+                            <button class="mood-btn p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 transition-colors" data-mood="😊">
+                                <div class="text-3xl mb-2">😊</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-300">Happy</div>
+                            </button>
+                            <button class="mood-btn p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 transition-colors" data-mood="😐">
+                                <div class="text-3xl mb-2">😐</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-300">Neutral</div>
+                            </button>
+                            <button class="mood-btn p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 transition-colors" data-mood="😢">
+                                <div class="text-3xl mb-2">😢</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-300">Sad</div>
+                            </button>
+                            <button class="mood-btn p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 transition-colors" data-mood="😤">
+                                <div class="text-3xl mb-2">😤</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-300">Angry</div>
+                            </button>
+                            <button class="mood-btn p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 transition-colors" data-mood="😰">
+                                <div class="text-3xl mb-2">😰</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-300">Anxious</div>
+                            </button>
+                            <button class="mood-btn p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 transition-colors" data-mood="😴">
+                                <div class="text-3xl mb-2">😴</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-300">Tired</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Energy & Sleep -->
+                    <div id="step2-content" class="step-content hidden">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Energy & Sleep</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Energy Level (1-10)</label>
+                                <input type="range" id="energy-slider" min="1" max="10" value="7" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+                                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                    <span>Low</span>
+                                    <span id="energy-value" class="font-semibold">7</span>
+                                    <span>High</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Hours of Sleep</label>
+                                <input type="number" id="sleep-input" min="0" max="24" step="0.5" value="8" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Stress & Activities -->
+                    <div id="step3-content" class="step-content hidden">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Stress & Activities</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Stress Level (1-10)</label>
+                                <input type="range" id="stress-slider" min="1" max="10" value="3" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+                                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                    <span>Low</span>
+                                    <span id="stress-value" class="font-semibold">3</span>
+                                    <span>High</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Today's Activities</label>
+                                <div class="flex flex-wrap gap-2" id="activities-container">
+                                    <button class="activity-btn px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-sm hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors" data-activity="Exercise">Exercise</button>
+                                    <button class="activity-btn px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-sm hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors" data-activity="Work">Work</button>
+                                    <button class="activity-btn px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-sm hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors" data-activity="Social">Social</button>
+                                    <button class="activity-btn px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-sm hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors" data-activity="Reading">Reading</button>
+                                    <button class="activity-btn px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-sm hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors" data-activity="Meditation">Meditation</button>
+                                    <button class="activity-btn px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-sm hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors" data-activity="Hobbies">Hobbies</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Food Intake -->
+                    <div id="step4-content" class="step-content hidden">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Food Intake</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Add Food Items</label>
+                                <div id="food-items-container" class="space-y-2 mb-4 max-h-40 overflow-y-auto border border-gray-300 dark:border-gray-600 rounded-lg p-2 bg-white dark:bg-gray-800"></div>
+                                <div class="flex space-x-2">
+                                    <input type="text" id="food-name-input" placeholder="Food name" class="flex-grow px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white" />
+                                    <input type="number" id="food-calories-input" placeholder="Calories" min="0" class="w-24 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white" />
+                                    <button id="add-food-btn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Add</button>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Nutrition Summary</h4>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600 dark:text-gray-300">Total Calories:</span>
+                                        <span id="total-calories" class="font-medium">0</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600 dark:text-gray-300">Food Items:</span>
+                                        <span id="food-count" class="font-medium">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Notes & Summary -->
+                    <div id="step5-content" class="step-content hidden">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Notes & Summary</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Additional Notes (Optional)</label>
+                                <textarea id="notes-input" rows="3" placeholder="How was your day? Any thoughts or reflections..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"></textarea>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Check-in Summary</h4>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600 dark:text-gray-300">Mood:</span>
+                                        <span id="summary-mood" class="font-medium">Not selected</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600 dark:text-gray-300">Energy:</span>
+                                        <span id="summary-energy" class="font-medium">7/10</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600 dark:text-gray-300">Sleep:</span>
+                                        <span id="summary-sleep" class="font-medium">8 hours</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600 dark:text-gray-300">Stress:</span>
+                                        <span id="summary-stress" class="font-medium">3/10</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600 dark:text-gray-300">Activities:</span>
+                                        <span id="summary-activities" class="font-medium">None selected</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600 dark:text-gray-300">Food Intake:</span>
+                                        <span id="summary-food" class="font-medium">None logged</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="flex justify-between mt-8">
+                        <button id="prev-btn" class="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            Previous
+                        </button>
+                        <button id="next-btn" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
