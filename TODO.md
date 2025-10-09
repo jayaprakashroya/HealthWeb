@@ -1,14 +1,9 @@
-# TODO: Complete Missing Data in Personal Health Mood Dashboard
+# TODO: Fix Render Deployment Errors
 
-## Backend Changes
-- [x] Convert ai.py to proper FastAPI router
-- [x] Include ai router in main.py
-- [x] Train ML model in ml_model.py with sample data
-
-## Frontend Changes
-- [x] Add missing dependencies to package.json (axios, react-toastify, framer-motion, react-chartjs-2, chart.js)
-- [x] Fix NotificationHandler usage in Dashboard.js
-
-## Testing
-- [x] Install frontend dependencies
-- [ ] Test application functionality
+## Tasks
+- [x] Add pydantic-settings to requirements.txt to resolve ModuleNotFoundError
+- [x] Update orm_mode to from_attributes in schema files to eliminate Pydantic v2 warnings
+  - [x] mood.py
+  - [x] prediction.py
+  - [x] habit.py
+- [ ] Test deployment after changes
