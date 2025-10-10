@@ -4,3 +4,4 @@
 - [x] Update main.py to conditionally initialize FastAPILimiter only if REDIS_URL is set
 - [x] Test the changes locally (run without Redis) - Server started successfully without Redis after installing dependencies
 - [x] Push changes to repository - Committed and pushed
+- [x] Deploy to Render - Successful, server running without Redis, root endpoint added to fix 404
