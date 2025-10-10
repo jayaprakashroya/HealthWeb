@@ -6,9 +6,13 @@ from fastapi_limiter import FastAPILimiter
 import redis.asyncio as redis
 from app.core.config import settings
 
-app = FastAPI()
+app = FastAPI(title="Personal Health Mood Dashboard API", version="1.0.0")
 
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
+
+@app.get("/")
+async def root():
+    return {"message": "Personal Health Mood Dashboard API is running. Use /docs for API documentation or /auth/register to get started."}
 
 # Rate limiting setup (Redis on Render or local)
 @app.on_event("startup")
