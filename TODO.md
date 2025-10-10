@@ -1,9 +1,6 @@
-# TODO: Fix Render Deployment Errors
+# TODO: Fix Redis Connection Issue for Render Deployment
 
-## Tasks
-- [x] Add pydantic-settings to requirements.txt to resolve ModuleNotFoundError
-- [x] Update orm_mode to from_attributes in schema files to eliminate Pydantic v2 warnings
-  - [x] mood.py
-  - [x] prediction.py
-  - [x] habit.py
-- [ ] Test deployment after changes
+- [x] Update config.py to make REDIS_URL optional (remove default, use Optional[str])
+- [x] Update main.py to conditionally initialize FastAPILimiter only if REDIS_URL is set
+- [x] Test the changes locally (run without Redis) - Server started successfully without Redis after installing dependencies
+- [ ] Deploy to Render to verify fix
