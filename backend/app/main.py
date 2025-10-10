@@ -10,9 +10,24 @@ app = FastAPI(title="Personal Health Mood Dashboard API", version="1.0.0")
 
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 async def root():
-    return {"message": "Personal Health Mood Dashboard API is running. Use /docs for API documentation or /auth/register to get started."}
+    return """
+    <html>
+        <head>
+            <title>Personal Health Mood Dashboard API</title>
+        </head>
+        <body>
+            <h1>Personal Health Mood Dashboard API</h1>
+            <p>The API is running successfully.</p>
+            <ul>
+                <li><a href="/docs">Interactive API docs</a></li>
+                <li><a href="/auth/register">Register a new user</a></li>
+                <li><a href="/redoc">Alternative API docs</a></li>
+            </ul>
+        </body>
+    </html>
+    """
 
 # Rate limiting setup (Redis on Render or local)
 @app.on_event("startup")
