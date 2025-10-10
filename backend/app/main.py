@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from app.api.endpoints import auth, habits, moods, predictions, ai, daily_checkins
 from app.database import engine, Base
 from fastapi_limiter import FastAPILimiter
